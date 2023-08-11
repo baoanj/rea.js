@@ -1,4 +1,4 @@
-![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6a4cdc9198e54c409ad9ff5ab04a0854~tplv-k3u1fbpfcp-watermark.image?)
+![image](https://github.com/baoanj/rea.js/assets/22257939/17d662fb-0caf-47af-afa0-b6de056bca93)
 
 # Rea.js 一个适合用于写原生 demo 的极简响应式 js 框架
 
@@ -242,4 +242,4 @@ methods: {
 
 [Rea.js Example - Todo List](https://baoanj.github.io/rea.js/)
 
-![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f88a38c178884b5793ec5423b8440081~tplv-k3u1fbpfcp-watermark.image?)
+![image](https://github.com/baoanj/rea.js/assets/22257939/fb2b28e9-82a0-4167-8353-df115c0bdf2d)
