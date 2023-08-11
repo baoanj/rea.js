@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rea.js Example - Todo List</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      padding: 1em;
+    }
+    input, select {
+      padding: 5px 10px;
+      font-size: 16px;
+      outline: none;
+    }
+    button {
+      padding: 3px 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .todo-tip {
+      color: red;
+    }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+    }
+    .todo-item:hover {
+      background: ghostwhite;
+    }
+    .todo-item span {
+      flex: 1
+    }
+    .todo-item-true {
+      color: gray;
+    }
+    .todo-item-check {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 1px solid gray;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    .todo-item-check-true {
+      border-color: green;
+      background: green;
+    }
+  </style>
+</head>
+
+<body>
+  <h1><a href="https://github.com/baoanj/rea.js" target="_blank">Rea.js</a> Example - Todo List</h1>
+  <br><br>
+  <div>
+    待办名称：
+    <input type="text" placeholder="开启你的待办事项" maxlength="20" r-model-todoName>
+    <span r-show-isShowLimit r-todoNameLimit></span>
+    <br><br>
+    优先级：
+    <select r-model-todoType r-for-typeList>
+      <option value="r-prop-value">r-prop-label</option>
+    </select>
+    <br><br>
+    待办时间：
+    <input type="datetime-local" r-model-todoTime>
+    <br><br>
+    <button r-event="click:addTodo">添加待办</button>
+    <span r-show-todoTip r-todoTip class="todo-tip"></span>
+    <br><br><hr>
+  </div>
+  <div r-for-todoListFormat>
+    <div class="todo-item todo-item-r-prop-check">
+      <div r-event="click:checkTodo" class="todo-item-check todo-item-check-r-prop-check"></div>
+      <span>r-prop-name</span>
+      <span>r-prop-type</span>
+      <span>r-prop-time</span>
+      <button r-event="click:delTodo">删除</button>
+    </div>
+  </div>
+  <script src="./rea.js"></script>
+  <script>
+    Rea({
+      data: {
+        typeList: [
+          { label: '高', value: 'h' },
+          { label: '中', value: 'm' },
+          { label: '低', value: 'l' }
+        ],
+        todoName: '',
+        todoType: null,
+        todoTime: null,
+        todoList: [
+          { name: 'Todo Example 1', type: 'h', time: '2023-08-12T15:18', check: false },
+          { name: 'Todo Example 2', type: 'm', time: '2023-08-12T15:18', check: true }
+        ],
+        todoTip: ''
+      },
+      computed: {
+        isShowLimit() {
+          return this.todoName.length > 0
+        },
+        todoNameLimit() {
+          return this.todoName.length + '/20'
+        },
+        todoListFormat() {
+          return this.todoList.map(m => {
+            return {
+              name: m.name,
+              type: this.typeList.find(f => f.value === m.type).label,
+              time: m.time.replace('T', ' '),
+              check: m.check
+            }
+          })
+        }
+      },
+      methods: {
+        addTodo() {
+          if (!this.todoName) {
+            this.showTip('请填写待办名称')
+            return
+          }
+          if (!this.todoType) {
+            this.showTip('请选择优先级')
+            return
+          }
+          if (!this.todoTime) {
+            this.showTip('请选择待办时间')
+            return
+          }
+          this.todoList.unshift({
+            name: this.todoName,
+            type: this.todoType,
+            time: this.todoTime,
+            check: false
+          })
+          this.todoName = ''
+          this.todoType = null
+          this.todoTime = null
+        },
+        showTip(msg) {
+          this.todoTip = msg
+          setTimeout(() => {
+            this.todoTip = ''
+          }, 3000)
+        },
+        delTodo(event, index) {
+          this.todoList.splice(index, 1)
+        },
+        checkTodo(event, index) {
+          this.todoList[index] = Object.assign(this.todoList[index], {
+            check: !this.todoList[index].check
+          })
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
